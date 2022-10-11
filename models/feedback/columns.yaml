@@ -18,6 +18,11 @@ columns:
             processed: Processed
             canceled: Canceled
 
+    email:
+        label: Email
+        type: text
+        width: 1%
+
     phone:
         label: Phone
         type: text

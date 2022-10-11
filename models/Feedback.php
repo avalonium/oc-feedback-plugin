@@ -1,5 +1,6 @@
 <?php namespace Avalonium\Feedback\Models;
 
+use Http;
 use Model;
 use Avalonium\Feedback\Factories\FeedbackFactory;
 
@@ -29,17 +30,23 @@ class Feedback extends Model
     /**
      * @var array fillable attributes are mass assignable
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'message'
+    ];
 
     /**
      * @var array rules for validation
      */
     public $rules = [
         'number' => 'string',
-        'status' => 'required:update|string|in:new,processed,canceled',
-        'name' => 'string',
-        'phone' => 'string',
-        'message' => 'required|string'
+        'status' => 'string|in:new,processed,canceled',
+        'name' => 'required|string',
+        'email' => 'required|string|email',
+        'phone' => 'required|string',
+        'message' => 'string'
     ];
 
     /**
@@ -49,6 +56,7 @@ class Feedback extends Model
         'number' => 'string',
         'status' => 'string',
         'name' => 'string',
+        'email' => 'string',
         'phone' => 'string',
         'message' => 'string'
     ];
@@ -93,6 +101,41 @@ class Feedback extends Model
     {
         $this->setAttribute('number', str('#')->append(str_pad($this->id, 6, "0", STR_PAD_LEFT))->value());
         $this->save();
+    }
+
+    /**
+     * Process Exchange
+     * @throws \Exception
+     */
+    public function process(): void
+    {
+        $this->setAttribute('status', self::STATUS_PROCESSED);
+        $this->save();
+    }
+
+    /**
+     * Cancel Exchange
+     * @throws \Exception
+     */
+    public function cancel(): void
+    {
+        $this->setAttribute('status', self::STATUS_CANCELED);
+        $this->save();
+    }
+
+    /**
+     * Send Data
+     */
+    public function sendData(string $url, array $utm = []): void
+    {
+        $data = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'message' => $this->message
+        ];
+
+        Http::asForm()->post($url, array_merge($data, $utm));
     }
 
     /**

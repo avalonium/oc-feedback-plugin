@@ -12,6 +12,7 @@ class FeedbackSeeder extends \October\Rain\Database\Updates\Seeder
         Feedback::create([
             // Base
             'name' => 'Ava Lon',
+            'email' => 'test@localhost',
             'phone' => '380989242645',
             'message' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         ]);

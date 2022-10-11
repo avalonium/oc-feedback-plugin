@@ -1,7 +1,7 @@
 <?php namespace Avalonium\Feedback;
 
 use System\Classes\PluginBase;
-use Avalonium\Feedback\Components\Form;
+use Avalonium\Feedback\Components\FeedbackForm;
 
 /**
  * Plugin Information File
@@ -14,7 +14,7 @@ class Plugin extends PluginBase
     public function registerComponents(): array
     {
         return [
-            Form::class => 'feedbackForm'
+            FeedbackForm::class => 'feedbackForm'
         ];
     }
 }

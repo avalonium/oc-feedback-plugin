@@ -8,6 +8,10 @@ fields:
         type: partial
         path: hint_name
 
+    _email:
+        type: partial
+        path: hint_email
+
     _phone:
         type: partial
         path: hint_phone

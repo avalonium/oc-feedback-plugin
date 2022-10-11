@@ -19,6 +19,7 @@ class FeedbackFactory extends \Illuminate\Database\Eloquent\Factories\Factory
     {
         return [
             'name' => fake()->text,
+            'email' => fake()->email,
             'phone' => fake()->phoneNumber,
             'message' => fake()->paragraph
         ];

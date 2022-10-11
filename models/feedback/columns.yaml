@@ -1,0 +1,44 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+
+    number:
+        label: Number
+        type: text
+        width: 1%
+
+    status:
+        label: Status
+        type: selectable
+        width: 20%
+        options:
+            new: New
+            processed: Processed
+            canceled: Canceled
+
+    phone:
+        label: Phone
+        type: text
+        width: 1%
+
+    message:
+        label: Message
+        type: summary
+        limitWords: 5
+
+    created_at:
+        label: Created
+        type: timesince
+        width: 1%
+        cssClass: t-nw
+        align: right
+
+    updated_at:
+        label: Updated
+        type: timesince
+        invisible: true
+        width: 1%
+        cssClass: t-nw
+        align: right

@@ -1,0 +1,18 @@
+# docker-compose.yml
+version: '3'
+services:
+
+  app:
+    container_name: feedback-plugin
+    image: feedback-plugin
+    ports:
+      - "80:80"
+    environment:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: storage/database.sqlite
+    volumes:
+      - storage-data:/var/www/html/storage
+      - ./:/var/www/html/plugins/avalonium/feedback
+
+volumes:
+  storage-data:

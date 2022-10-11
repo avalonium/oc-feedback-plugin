@@ -1,0 +1,19 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Feedback
+
+# Model Form Field configuration
+form: $/avalonium/feedback/models/feedback/fields.yaml
+
+# Model Class name
+modelClass: Avalonium\Feedback\Models\Feedback
+
+# Default redirect location
+defaultRedirect: avalonium/feedback/feedbacks
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

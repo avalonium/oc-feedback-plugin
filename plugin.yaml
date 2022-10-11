@@ -1,0 +1,16 @@
+# Plugin information
+plugin:
+  name: Feedback Plugin
+  description: Feedback plugin for OctoberCMS
+  icon: icon-comment-o
+  author: AvaloniumTeam
+  homepage: https://github.com/avalonium/oc-feedback-plugin
+
+settings:
+  feedback:
+    label: Feedback
+    description: Manage feedback requests
+    category: Avalonium
+    url: avalonium/feedback/feedbacks
+    icon: icon-comment-o
+    order: 100

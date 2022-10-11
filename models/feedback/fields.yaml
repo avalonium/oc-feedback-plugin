@@ -1,0 +1,17 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    _name:
+        type: partial
+        path: hint_name
+
+    _phone:
+        type: partial
+        path: hint_phone
+
+    _message:
+        type: partial
+        path: hint_message

@@ -135,7 +135,7 @@ class Feedback extends Model
             'message' => $this->message
         ];
 
-        Http::asForm()->post($url, array_merge($data, $utm));
+        Http::asForm()->get($url, array_merge($data, $utm));
     }
 
     /**

@@ -37,6 +37,9 @@ defaultSort:
 # Display checkboxes next to each record
 showCheckboxes: false
 
+# Displays the list filter
+filter: $/avalonium/feedback/models/request/scopes.yaml
+
 # Toolbar widget configuration
 toolbar:
     # Partial for toolbar buttons

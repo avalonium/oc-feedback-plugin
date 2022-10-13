@@ -1,0 +1,14 @@
+# ===================================
+#  List Scope Definitions
+# ===================================
+
+scopes:
+
+  status:
+    label: Status
+    type: group
+    conditions: status in (:value)
+    options:
+      new: New
+      processed: Processed
+      canceled: Canceled

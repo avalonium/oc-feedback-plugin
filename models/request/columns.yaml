@@ -7,6 +7,7 @@ columns:
     number:
         label: Number
         type: text
+        searchable: true
         width: 1%
 
     status:
@@ -21,11 +22,13 @@ columns:
     email:
         label: Email
         type: text
+        searchable: true
         width: 1%
 
     phone:
         label: Phone
         type: text
+        searchable: true
         width: 1%
 
     message:

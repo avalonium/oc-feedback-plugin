@@ -4,10 +4,6 @@
 
 fields:
 
-    _name:
-        type: partial
-        path: hint_name
-
     _email:
         type: partial
         path: hint_email
@@ -19,3 +15,14 @@ fields:
     _message:
         type: partial
         path: hint_message
+
+    _utm:
+        type: partial
+        path: hint_utm
+
+tabs:
+    fields:
+
+        logs:
+            tab: Log
+            type: relation

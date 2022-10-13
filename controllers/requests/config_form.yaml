@@ -3,16 +3,16 @@
 # ===================================
 
 # Record name
-name: Feedback
+name: Request
 
 # Model Form Field configuration
-form: $/avalonium/feedback/models/feedback/fields.yaml
+form: $/avalonium/feedback/models/request/fields.yaml
 
 # Model Class name
-modelClass: Avalonium\Feedback\Models\Feedback
+modelClass: Avalonium\Feedback\Models\Request
 
 # Default redirect location
-defaultRedirect: avalonium/feedback/feedbacks
+defaultRedirect: avalonium/feedback/requests
 
 # Preview page
 preview:

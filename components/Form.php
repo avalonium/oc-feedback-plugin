@@ -8,12 +8,12 @@ use Validator;
 use Exception;
 use ValidationException;
 use Cms\Classes\ComponentBase;
-use Avalonium\Feedback\Models\Feedback as FeedbackModel;
+use Avalonium\Feedback\Models\Request as RequestModel;
 
 /**
  * Form Component
  */
-class FeedbackForm extends ComponentBase
+class Form extends ComponentBase
 {
     /**
      * Component details
@@ -63,7 +63,7 @@ class FeedbackForm extends ComponentBase
     {
         try {
             $data = post();
-            $rules = (new FeedbackModel())->rules;
+            $rules = (new RequestModel())->rules;
 
             $validation = Validator::make($data, $rules);
 
@@ -71,12 +71,16 @@ class FeedbackForm extends ComponentBase
                 throw new ValidationException($validation);
             }
 
-            $feedback = new FeedbackModel();
-            $feedback->fill($data);
-            $feedback->save();
+            $utm = Session::get('avalonium-feedback-utm', []);
+
+            $model = new RequestModel();
+            $model->ip_address = Request::getClientIp();
+            $model->fill($data);
+            $model->utm = $utm;
+            $model->save();
 
             if ($url = $this->property('url')) {
-                $feedback->sendData($url, Session::get('avalonium-feedback-utm', []));
+                $model->sendData($url);
             }
 
             Flash::success($this->property('successMessage'));

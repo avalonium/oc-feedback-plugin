@@ -3,16 +3,16 @@
 # ===================================
 
 # Model List Column configuration
-list: $/avalonium/feedback/models/feedback/columns.yaml
+list: $/avalonium/feedback/models/request/columns.yaml
 
 # Model Class name
-modelClass: Avalonium\Feedback\Models\Feedback
+modelClass: Avalonium\Feedback\Models\Request
 
 # List Title
-title: Manage Feedbacks
+title: Manage Requests
 
 # Link URL for each record
-recordUrl: avalonium/feedback/feedbacks/preview/:id
+recordUrl: avalonium/feedback/requests/preview/:id
 
 # Message to display if the list is empty
 noRecordsMessage: backend::lang.list.no_records

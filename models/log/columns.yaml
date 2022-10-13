@@ -1,0 +1,30 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+
+    type:
+        label: Type
+        type: text
+        width: 1%
+        sortable: 0
+
+    message:
+        label: Message
+        type: text
+        sortable: 0
+
+    author:
+        label: Author
+        relation: author
+        select: concat(first_name, ' ', last_name)
+        cssClass: t-nw
+        width: 1%
+
+    created_at:
+        label: Created
+        type: timesince
+        width: 1%
+        cssClass: t-nw
+        align: right

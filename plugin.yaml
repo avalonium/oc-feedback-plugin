@@ -8,9 +8,9 @@ plugin:
 
 settings:
   feedback:
-    label: Feedback
+    label: Feedback requests
     description: Manage feedback requests
     category: Avalonium
-    url: avalonium/feedback/feedbacks
+    url: avalonium/feedback/requests
     icon: icon-comment-o
     order: 100

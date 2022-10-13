@@ -1,5 +1,5 @@
 <div class="btn-group">
-    <a href="<?= Backend::url('avalonium/feedback/feedbacks') ?>"
+    <a href="<?= Backend::url('avalonium/feedback/requests') ?>"
        class="btn btn-default oc-icon-chevron-left"><?= __('Return') ?></a>
 </div>
 

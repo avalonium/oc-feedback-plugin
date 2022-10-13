@@ -2,12 +2,13 @@
 
 use Http;
 use Model;
-use Avalonium\Feedback\Factories\FeedbackFactory;
+use Event;
+use Avalonium\Feedback\Factories\RequestFactory;
 
 /**
- * Feedback Model
+ * Request Model
  */
-class Feedback extends Model
+class Request extends Model
 {
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\SoftDelete;
@@ -20,7 +21,7 @@ class Feedback extends Model
     /**
      * @var string table associated with the model
      */
-    public $table = 'avalonium_feedback';
+    public $table = 'avalonium_feedback_requests';
 
     /**
      * @var array guarded attributes aren't mass assignable
@@ -34,8 +35,14 @@ class Feedback extends Model
         'name',
         'email',
         'phone',
-        'message'
+        'message',
+        'utm'
     ];
+
+    /**
+     * @var array Json fields
+     */
+    protected $jsonable  = ['utm'];
 
     /**
      * @var array rules for validation
@@ -71,6 +78,16 @@ class Feedback extends Model
     ];
 
     //
+    // Relations
+    //
+
+    public $morphMany = [
+        'logs' => [
+            Log::class, 'name' => 'loggable'
+        ]
+    ];
+
+    //
     // Events
     //
 
@@ -82,6 +99,7 @@ class Feedback extends Model
     public function afterCreate()
     {
         $this->touchNumber();
+        Event::fire('avalonium.feedback.request_created', [$this]);
     }
 
     /**
@@ -94,7 +112,7 @@ class Feedback extends Model
     }
 
     /**
-     * Touch Exchange number
+     * Touch number
      * @throws \Exception
      */
     private function touchNumber(): void
@@ -123,26 +141,35 @@ class Feedback extends Model
         $this->save();
     }
 
-    /**
-     * Send Data
-     */
-    public function sendData(string $url, array $utm = []): void
+    public function sendData($url)
     {
-        $data = [
+        $response = Http::get($url, [
             'name' => $this->name,
-            'email' => $this->email,
+            'mail' => $this->email,
             'phone' => $this->phone,
-            'message' => $this->message
-        ];
+            'message' => $this->message,
+            'utm_source' => array_get($this->utm, 'utm_source'),
+            'utm_medium' => array_get($this->utm, 'utm_medium'),
+            'utm_campaign' => array_get($this->utm, 'utm_campaign'),
+            'utm_content' => array_get($this->utm, 'utm_content'),
+            'utm_term' => array_get($this->utm, 'utm_term')
+        ]);
 
-        Http::asForm()->get($url, array_merge($data, $utm));
+        $this->logs()->create([
+            'type' => 'updated',
+            'message' => __('Request with number :number has been sent', ['number' => $this->number]),
+            'details' => [
+                'url' => $url,
+                'status' => $response->status()
+            ]
+        ]);
     }
 
     /**
      * Get Model Factory
      */
-    protected static function newFactory(): FeedbackFactory
+    protected static function newFactory(): RequestFactory
     {
-        return FeedbackFactory::new();
+        return RequestFactory::new();
     }
 }

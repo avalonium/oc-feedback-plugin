@@ -5,21 +5,23 @@ use October\Rain\Database\Schema\Blueprint;
 use October\Rain\Database\Updates\Migration;
 
 /**
- * CreateFeedbackTable Migration
+ * CreateRequestsTable Migration
  */
-class CreateFeedbackTable extends Migration
+class CreateRequestsTable extends Migration
 {
     public function up()
     {
-        Schema::create('avalonium_feedback', function (Blueprint $table) {
+        Schema::create('avalonium_feedback_requests', function (Blueprint $table) {
             // Base
             $table->id();
-            $table->string('number', 10)->nullable();
             $table->string('status', 10);
-            $table->string('name', 50)->nullable();
+            $table->string('number', 10)->nullable();
+            $table->string('ip_address')->nullable();
+            $table->string('name', 50);
             $table->string('email', 50)->nullable();
             $table->string('phone', 20)->nullable();
             $table->text('message')->nullable();
+            $table->json('utm')->nullable();
             // Timestamps
             $table->timestamps();
             $table->softDeletes();
@@ -28,6 +30,6 @@ class CreateFeedbackTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('avalonium_feedback');
+        Schema::dropIfExists('avalonium_feedback_requests');
     }
 }

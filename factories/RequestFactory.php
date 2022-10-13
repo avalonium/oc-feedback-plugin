@@ -1,16 +1,16 @@
 <?php namespace Avalonium\Feedback\Factories;
 
-use Avalonium\Feedback\Models\Feedback;
+use Avalonium\Feedback\Models\Request;
 
 /**
  * Feedback Model Factory
  */
-class FeedbackFactory extends \Illuminate\Database\Eloquent\Factories\Factory
+class RequestFactory extends \Illuminate\Database\Eloquent\Factories\Factory
 {
     /**
      * Factory Model
      */
-    protected $model = Feedback::class;
+    protected $model = Request::class;
 
     /**
      * Define the model's default state.
@@ -21,7 +21,11 @@ class FeedbackFactory extends \Illuminate\Database\Eloquent\Factories\Factory
             'name' => fake()->text,
             'email' => fake()->email,
             'phone' => fake()->phoneNumber,
-            'message' => fake()->paragraph
+            'message' => fake()->paragraph,
+            'ip_address' => fake()->ipv4,
+            'utm' => [
+                'test' => 'Test'
+            ]
         ];
     }
 }

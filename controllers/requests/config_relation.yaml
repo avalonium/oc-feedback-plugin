@@ -1,0 +1,7 @@
+logs:
+  label: Logs
+  readOnly: true
+  view:
+    recordsPerPage: 10
+    recordOnClick: "$.popup({ handler: 'onViewDetails', extraData: { record_id: ':id' } })"
+    list: $/avalonium/feedback/models/log/columns.yaml

@@ -1,7 +1,10 @@
 <?php namespace Avalonium\Feedback;
 
+use App;
+use Event;
 use System\Classes\PluginBase;
-use Avalonium\Feedback\Components\FeedbackForm;
+use Avalonium\Feedback\Components\Form;
+use Avalonium\Feedback\Classes\FeedbackEventHandler;
 
 /**
  * Plugin Information File
@@ -14,7 +17,16 @@ class Plugin extends PluginBase
     public function registerComponents(): array
     {
         return [
-            FeedbackForm::class => 'feedbackForm'
+            Form::class => 'feedbackForm'
         ];
+    }
+
+    /**
+     * boot method, called right before the request route.
+     */
+    public function boot(): void
+    {
+        Event::subscribe(FeedbackEventHandler::class);
+        App::register('Propaganistas\LaravelPhone\PhoneServiceProvider');
     }
 }

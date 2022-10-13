@@ -1,24 +1,24 @@
 <?php namespace Avalonium\Shop\Tests\Models;
 
 use PluginTestCase;
-use Avalonium\Feedback\Models\Feedback;
+use Avalonium\Feedback\Models\Request;
 
 /**
  * Feedback Model Test
  */
-class FeedbackModelTest extends PluginTestCase
+class RequestModelTest extends PluginTestCase
 {
     /**
      * Create Model Test
      */
     public function test_create_feedback(): void
     {
-        Feedback::truncate();
+        Request::truncate();
 
-        $model = Feedback::factory()->create();
+        $model = Request::factory()->create();
 
         // Check Model
-        $this->assertInstanceOf(Feedback::class, $model);
+        $this->assertInstanceOf(Request::class, $model);
         $this->assertDatabaseCount($model->getTable(), 1);
         $this->assertDatabaseHas($model->getTable(), $model->getAttributes());
     }

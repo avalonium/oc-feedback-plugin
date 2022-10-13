@@ -15,6 +15,10 @@ use Avalonium\Feedback\Models\Request as RequestModel;
  */
 class Form extends ComponentBase
 {
+    public array $marks = [
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'
+    ];
+
     /**
      * Component details
      */
@@ -45,6 +49,30 @@ class Form extends ComponentBase
                 'default'           => __('Request successful created'),
                 'showExternalParam' => false,
             ],
+            'isRequiredName' => [
+                'title' => __('Name field is required'),
+                'type' => 'checkbox',
+                'group' => 'Validation',
+                'default' => true
+            ],
+            'isRequiredEmail' => [
+                'title' => __('Email field is required'),
+                'type' => 'checkbox',
+                'group' => 'Validation',
+                'default' => true
+            ],
+            'isRequiredPhone' => [
+                'title' => __('Phone field is required'),
+                'type' => 'checkbox',
+                'group' => 'Validation',
+                'default' => true
+            ],
+            'isRequiredMessage' => [
+                'title' => __('Message field is required'),
+                'type' => 'checkbox',
+                'group' => 'Validation',
+                'default' => true
+            ]
         ];
     }
 
@@ -63,20 +91,23 @@ class Form extends ComponentBase
     {
         try {
             $data = post();
-            $rules = (new RequestModel())->rules;
 
-            $validation = Validator::make($data, $rules);
+            $rules = [
+                'name' => ['required', 'string'],
+                'email' => ['string', 'email'],
+                'phone' => ['string'],
+                'message' => ['string']
+            ];
+
+            $validation = Validator::make($data, $this->extendValidationRules($rules));
 
             if ($validation->fails()) {
                 throw new ValidationException($validation);
             }
 
-            $utm = Session::get('avalonium-feedback-utm', []);
-
-            $model = new RequestModel();
-            $model->ip_address = Request::getClientIp();
-            $model->fill($data);
-            $model->utm = $utm;
+            $model = RequestModel::make($data);
+            $model->setAttribute('utm', Session::get('avalonium-feedback-marks', []));
+            $model->setAttribute('ip_address', Request::getClientIp());
             $model->save();
 
             if ($url = $this->property('url')) {
@@ -94,14 +125,30 @@ class Form extends ComponentBase
         }
     }
 
-    private function trackUtmMarks():void
+    /**
+     * Extend validation rules
+     */
+    private function extendValidationRules(array $rules): array
     {
-        Session::put('avalonium-feedback-utm', [
-            'utm_source' => Input::get('utm_source'),
-            'utm_medium' => Input::get('utm_medium'),
-            'utm_campaign' => Input::get('utm_campaign'),
-            'utm_content' => Input::get('utm_content'),
-            'utm_term' => Input::get('utm_term')
-        ]);
+        $this->property('isRequiredName') && array_push($rules['name'], 'required');
+        $this->property('isRequiredEmail') && array_push($rules['email'], 'required');
+        $this->property('isRequiredPhone') && array_push($rules['phone'], 'required');
+        $this->property('isRequiredMessage') && array_push($rules['message'], 'required');
+
+        return $rules;
+    }
+
+    /**
+     * Put UTM marks to session
+     */
+    private function trackUtmMarks(): void
+    {
+        $data = Session::get('avalonium-feedback-marks', []);
+
+        foreach ($this->marks as $mark) {
+            Input::has($mark) && $data[$mark] = Input::get($mark);
+        }
+
+        Session::put('avalonium-feedback-marks', $data);
     }
 }

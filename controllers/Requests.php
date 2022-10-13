@@ -46,6 +46,12 @@ class Requests extends Controller
         BackendMenu::setContext('October.System', 'system', 'settings');
     }
 
+    public function index()
+    {
+        $this->vars['scoreboard'] = $this->getListScoreboard();
+        $this->asExtension('ListController')->index();
+    }
+
     /**
      * Process request ajax handler
      */
@@ -88,5 +94,14 @@ class Requests extends Controller
         $this->vars['details'] = $model->details;
 
         return $this->makePartial('modal_details');
+    }
+
+    private function getListScoreboard()
+    {
+        return [
+            'new_count' => Request::whereStatus(Request::STATUS_NEW)->count(),
+            'processed_count' => Request::whereStatus(Request::STATUS_PROCESSED)->count(),
+            'canceled_count' => Request::whereStatus(Request::STATUS_CANCELED)->count()
+        ];
     }
 }

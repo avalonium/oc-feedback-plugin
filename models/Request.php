@@ -50,9 +50,9 @@ class Request extends Model
     public $rules = [
         'number' => 'string',
         'status' => 'string|in:new,processed,canceled',
-        'name' => 'required|string',
-        'email' => 'required|string|email',
-        'phone' => 'required|string',
+        'name' => 'string',
+        'email' => 'string|email',
+        'phone' => 'string',
         'message' => 'string'
     ];
 
@@ -65,7 +65,8 @@ class Request extends Model
         'name' => 'string',
         'email' => 'string',
         'phone' => 'string',
-        'message' => 'string'
+        'message' => 'string',
+        'utm' => 'string'
     ];
 
     /**

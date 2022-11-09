@@ -2,6 +2,7 @@
 
 use Flash;
 use Event;
+use Cache;
 use BackendMenu;
 use ApplicationException;
 use Backend\Classes\Controller;
@@ -42,13 +43,12 @@ class Requests extends Controller
     {
         parent::__construct();
 
-        SettingsManager::setContext('Avalonium.Feedback', 'feedback');
-        BackendMenu::setContext('October.System', 'system', 'settings');
+        BackendMenu::setContext('Avalonium.Feedback', 'feedback', 'requests');
     }
 
     public function index()
     {
-        $this->vars['scoreboard'] = $this->getListScoreboard();
+        $this->vars['scoreboard'] = Request::getScoreboardData();
         $this->asExtension('ListController')->index();
     }
 
@@ -94,14 +94,5 @@ class Requests extends Controller
         $this->vars['details'] = $model->details;
 
         return $this->makePartial('modal_details');
-    }
-
-    private function getListScoreboard()
-    {
-        return [
-            'new_count' => Request::whereStatus(Request::STATUS_NEW)->count(),
-            'processed_count' => Request::whereStatus(Request::STATUS_PROCESSED)->count(),
-            'canceled_count' => Request::whereStatus(Request::STATUS_CANCELED)->count()
-        ];
     }
 }

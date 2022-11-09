@@ -27,6 +27,5 @@ class Plugin extends PluginBase
     public function boot(): void
     {
         Event::subscribe(FeedbackEventHandler::class);
-        App::register('Propaganistas\LaravelPhone\PhoneServiceProvider');
     }
 }

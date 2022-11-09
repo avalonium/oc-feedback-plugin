@@ -13,7 +13,7 @@ columns:
     status:
         label: Status
         type: selectable
-        width: 20%
+        width: 10%
         options:
             new: New
             processed: Processed
@@ -23,30 +23,34 @@ columns:
         label: Email
         type: text
         searchable: true
-        width: 1%
+        width: 20%
 
     phone:
         label: Phone
         type: text
         searchable: true
-        width: 1%
+        width: 15%
 
     message:
         label: Message
         type: summary
+        align: right
         limitWords: 5
+        sortable: false
 
     created_at:
         label: Created
-        type: timesince
+        type: date
+        format: d/m/Y h:m:s
         width: 1%
         cssClass: t-nw
         align: right
 
     updated_at:
-        label: Updated
-        type: timesince
         invisible: true
+        label: Updated
+        type: date
+        format: d/m/Y h:m:s
         width: 1%
         cssClass: t-nw
         align: right

@@ -6,11 +6,16 @@ plugin:
   author: AvaloniumTeam
   homepage: https://github.com/avalonium/oc-feedback-plugin
 
-settings:
+# Plugin navigation
+navigation:
   feedback:
-    label: Feedback requests
-    description: Manage feedback requests
-    category: Avalonium
+    label: Feedback
     url: avalonium/feedback/requests
     icon: icon-comment-o
-    order: 100
+    sideMenu:
+      requests:
+        label: Requests
+        url: avalonium/feedback/requests
+        icon: icon-comment-o
+        counter: \Avalonium\Feedback\Models\Request::countNewRequests
+        counterLabel: New Requests

@@ -1,8 +1,10 @@
 <?php namespace Avalonium\Feedback\Models;
 
+use DB;
 use Http;
 use Model;
 use Event;
+use Cache;
 use Avalonium\Feedback\Factories\RequestFactory;
 
 /**
@@ -17,6 +19,8 @@ class Request extends Model
     const STATUS_NEW = 'new';
     const STATUS_PROCESSED = 'processed';
     const STATUS_CANCELED = 'canceled';
+
+    const SCOREBOARD_CACHE_KEY = 'ava-scoreboard-feedback-requests';
 
     /**
      * @var string table associated with the model
@@ -103,6 +107,21 @@ class Request extends Model
         Event::fire('avalonium.feedback.request_created', [$this]);
     }
 
+    public function afterSave()
+    {
+        Cache::forget(self::SCOREBOARD_CACHE_KEY);
+    }
+
+    /**
+     *
+     */
+    public function getIsClosedAttribute(): bool
+    {
+        return match ($this->status) {
+            self::STATUS_PROCESSED, self::STATUS_CANCELED => true, default => false
+        };
+    }
+
     /**
      * Update exchange status
      * @throws \Exception
@@ -164,6 +183,32 @@ class Request extends Model
                 'status' => $response->status()
             ]
         ]);
+    }
+
+    /**
+     * Count New Requests
+     */
+    public static function countNewRequests(): int
+    {
+        return self::where('status', self::STATUS_NEW)->count();
+    }
+
+    /**
+     * Get Scoreboard data
+     */
+    public static function getScoreboardData()
+    {
+        if (Cache::missing(self::SCOREBOARD_CACHE_KEY)) {
+            Cache::add(self::SCOREBOARD_CACHE_KEY,
+                DB::table('avalonium_feedback_requests')
+                    ->select(DB::raw('count(*) as requests_count'))
+                    ->addSelect(DB::raw('sum(case when status = "'.self::STATUS_NEW.'" then 1 else 0 end) as new_requests_count'))
+                    ->addSelect(DB::raw('sum(case when status = "'.self::STATUS_PROCESSED.'" then 1 else 0 end) as processed_requests_count'))
+                    ->addSelect(DB::raw('sum(case when status = "'.self::STATUS_CANCELED.'" then 1 else 0 end) as canceled_requests_count'))
+                    ->first());
+        }
+
+        return Cache::get(self::SCOREBOARD_CACHE_KEY);
     }
 
     /**

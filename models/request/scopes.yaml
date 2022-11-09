@@ -12,3 +12,10 @@ scopes:
       new: New
       processed: Processed
       canceled: Canceled
+
+  created_at:
+    label: Created
+    type: date
+    conditions:
+      before: created_at <= ':value'
+      between: created_at >= ':after' AND created_at <= ':before'
